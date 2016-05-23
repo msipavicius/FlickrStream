@@ -1,6 +1,7 @@
-package com.fstream.flickrstream;
+package com.fstream.flickrstream.flickr;
 
-import java.util.ArrayList;
+import com.fstream.flickrstream.dtos.ImageDto;
+
 import java.util.List;
 
 public class FlickrManager {

@@ -16,7 +16,6 @@ public class SingleImageView extends AppCompatActivity {
 
         Intent intent = getIntent();
         String url = intent.getStringExtra(MainActivity.PREVIEW_URL_EXTRA);
-        url = url.substring(0, url.length()-6) + ".jpg";
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) findViewById(R.id.singleImageView);

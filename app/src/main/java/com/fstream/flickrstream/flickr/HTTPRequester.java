@@ -1,4 +1,4 @@
-package com.fstream.flickrstream;
+package com.fstream.flickrstream.flickr;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

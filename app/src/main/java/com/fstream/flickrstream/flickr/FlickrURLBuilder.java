@@ -1,8 +1,8 @@
-package com.fstream.flickrstream;
+package com.fstream.flickrstream.flickr;
 
-/**
- * Created by Smarty on 18/05/16.
- */
+import com.fstream.flickrstream.dtos.ImageDto;
+import com.fstream.flickrstream.dtos.UserDto;
+
 public class FlickrURLBuilder {
     private static final String FLICKR_BASE_URL = "https://api.flickr.com/services/rest/?method=";
 
@@ -13,7 +13,7 @@ public class FlickrURLBuilder {
     private static final String FORMAT_PARAM = "&format=";
     private static final String PER_PAGE_PARAM = "&per_page=";
     private static final String MEDIA_PARAM = "&media=";
-    private static final String USER_ID_PARAM = "&user_id=";
+    private static final String EXTRAS_PARAM = "&extras=";
 
     // Param values
     private static final String API_KEY = "b6523d622b1d7c02a8ed39c65e07b404";
@@ -21,11 +21,11 @@ public class FlickrURLBuilder {
     private static final int NUMBER_OF_PHOTOS = 50;
     private static final String FORMAT = "json";
     private static final String MEDIA_TYPE = "photos";
+    private static final String EXTRAS = "owner_name,icon_server";
 
     // Methods
     private static final String FLICKR_EXPLORE_PHOTOS_METHOD = "flickr.interestingness.getList";
     private static final String FLICKR_SEARCH_PHOTOS_METHOD = "flickr.photos.search";
-    private static final String FLICKR_USER_INFO_METHOD = "flickr.people.getInfo";
 
     public static String buildSearchURL(String query) {
         String formatedQuery = query.trim().replace(" ", "+");
@@ -36,7 +36,8 @@ public class FlickrURLBuilder {
                 + SORT_PARAM + SORT_STRATEGY
                 + FORMAT_PARAM + FORMAT
                 + PER_PAGE_PARAM + NUMBER_OF_PHOTOS
-                + MEDIA_PARAM + MEDIA_TYPE;
+                + MEDIA_PARAM + MEDIA_TYPE
+                + EXTRAS_PARAM + EXTRAS;
     }
 
     public static String buildExploreURL() {
@@ -45,21 +46,26 @@ public class FlickrURLBuilder {
                 + KEY_PARAM + API_KEY
                 + FORMAT_PARAM + FORMAT
                 + PER_PAGE_PARAM + NUMBER_OF_PHOTOS
-                + MEDIA_PARAM + MEDIA_TYPE;
+                + EXTRAS_PARAM + EXTRAS;
     }
 
-    public static String buildUserInfoURL(String userId) {
-        return FLICKR_BASE_URL
-                + FLICKR_USER_INFO_METHOD
-                + KEY_PARAM + API_KEY
-                + USER_ID_PARAM + userId
-                + FORMAT_PARAM + FORMAT;
+    /**
+     *
+     * @param image image DTO
+     * @param size see https://www.flickr.com/services/api/misc.urls.html for possible values
+     * @return url to photo of desired size
+     */
+    public static String buildSingleImageURL(ImageDto image, String size) {
+        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size char}.jpg
+        if (!size.isEmpty()) {
+            size = "_" + size;
+        }
+        return String.format("https://farm%s.staticflickr.com/%s/%s_%s%s.jpg",
+                image.getFarm(), image.getServer(), image.getId(),image.getSecret(), size);
     }
 
     public static String buildSingleImageURL(ImageDto image) {
-        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size char}.jpg
-        return String.format("https://farm%s.staticflickr.com/%s/%s_%s_m.jpg",
-                image.getFarm(), image.getServer(), image.getId(),image.getSecret());
+        return buildSingleImageURL(image, "");
     }
 
     public static String buildBuddyIconURL(ImageDto image) {

@@ -5,4 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_message">My Message</string>
     <string name="descr_image">Image</string>
+    <string name="photo_default_description">Photo</string>
+    <string name="buddyicon_default_description">Buddyicon</string>
+    <string name="by">By </string>
 </resources>

@@ -1,4 +1,4 @@
-package com.fstream.flickrstream;
+package com.fstream.flickrstream.dtos;
 
 /**
  * Created by Smarty on 18/05/16.
